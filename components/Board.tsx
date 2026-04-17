@@ -12,7 +12,6 @@ import {
   DragStartEvent,
   DragOverEvent,
   DragEndEvent,
-  DefaultAnnouncements,
 } from '@dnd-kit/core';
 import {
   sortableKeyboardCoordinates,
