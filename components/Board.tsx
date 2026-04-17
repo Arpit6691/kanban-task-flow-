@@ -53,8 +53,9 @@ export const Board = () => {
   );
 
   const handleDragStart = (event: DragStartEvent) => {
-    if (event.active.data.current?.type === 'Card') {
-      setActiveCard(event.active.data.current.card);
+    const data = event.active.data.current;
+    if (data?.type === 'Card') {
+      setActiveCard(data.card);
     }
   };
 
@@ -67,15 +68,18 @@ export const Board = () => {
 
     if (activeId === overId) return;
 
-    const isActiveACard = active.data.current?.type === 'Card';
-    const isOverACard = over.data.current?.type === 'Card';
+    const activeData = active.data.current;
+    const overData = over.data.current;
 
-    if (!isActiveACard) return;
+    const isActiveACard = activeData?.type === 'Card';
+    const isOverACard = overData?.type === 'Card';
+
+    if (!isActiveACard || !activeData) return;
 
     // Dropping a Card over another Card
-    if (isActiveACard && isOverACard) {
-      const activeCard = active.data.current.card as CardType;
-      const overCard = over.data.current.card as CardType;
+    if (isOverACard && overData) {
+      const activeCard = activeData.card as CardType;
+      const overCard = overData.card as CardType;
 
       if (activeCard.columnId !== overCard.columnId) {
         moveCard(activeId, overCard.columnId);
@@ -84,8 +88,8 @@ export const Board = () => {
 
     // Dropping a Card over a Column
     const isOverAColumn = columns.some((col) => col.id === overId);
-    if (isActiveACard && isOverAColumn) {
-      const activeCard = active.data.current.card as CardType;
+    if (isOverAColumn) {
+      const activeCard = activeData.card as CardType;
       if (activeCard.columnId !== overId) {
         moveCard(activeId, overId as ColumnId);
       }
